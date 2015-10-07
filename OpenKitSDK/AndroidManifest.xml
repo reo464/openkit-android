@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ import io.openkit.*;
     package="io.openkit"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -14,3 +15,46 @@
     </application>
 
 </manifest>
+otected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    ...
+    // Grab your app key and secret key from the OpenKit dashboard at http://developer.openkit.io/
+    String myAppKey = "BspfxiqMuYxNEotLeGLm";
+    String mySecretKey = "2sHQOuqgwzocUdiTsTWzyQlOy1paswYLGjrdRWWf";
+
+    // Initialize OpenKit. You must call this when your app starts (so we call it in onCreate in our MainActivity)
+    OpenKit.configure(this, myAppKey, mySecretKey);
+    ...
+    <!-- Must add the INTERNET permission for OpenKit and the Facebook SDK to Work -->
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- Must add the GET_ACCOUNTS and USE_CREDENTIALS perimissions to support Google auth -->
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+<application>
+    ...
+    <!-- Declare the OpenKit activities as follows, these are required for OpenKit login and to show leaderboards -->
+    <!-- You can copy the below exactly -->
+    <activity
+                android:name="io.openkit.OKLoginActivity"
+                android:theme="@style/Theme.Transparent" />
+    <activity android:name="io.openkit.leaderboards.OKLeaderboardsActivity" />
+    <activity android:name="io.openkit.leaderboards.OKScoresActivity" />
+    <activity android:name="io.openkit.user.OKUserProfileActivity" />
+    <activity android:name="io.openkit.facebook.LoginActivity" />
+    ...
+</application>
+<application>
+    ...
+    <!-- Metadata tag required by facebook SDK. References the FB app id stored in strings -->
+    <meta-data
+         android:name="com.facebook.sdk.ApplicationId"
+         android:value="@string/fb_app_id" />
+    ...
+</application>
+if(OpenKit.getCurrentUser() != null) {
+    //User is logged in
+    OKUser currentUser = OpenKit.getCurrentUser();
+}
+else {
+    // No user is logged in
+}
